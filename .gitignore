@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.DS_Store
+
+# Datasets are downloaded on first run -- never commit ~150 MB of MNIST.
+data/
+
+# Trained weights ARE committed (see models/README.md): the checkpoint is
+# ~1.2 MB and having it in the repo means `git clone && uvicorn` just works.
+# Anything larger or experimental stays out.
+models/*.ckpt
+reports/figures/*.svg
+data/framed/

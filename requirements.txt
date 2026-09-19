@@ -1,0 +1,11 @@
+# Pinned to minor versions: loose enough to get security fixes, tight enough
+# that a fresh clone six months from now trains the same model.
+torch>=2.2,<3
+torchvision>=0.17,<1
+numpy>=1.26
+pillow>=10.0
+pyyaml>=6.0
+matplotlib>=3.8          # evaluation figures, and the fonts used for glyph negatives
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9  # file uploads
