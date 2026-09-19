@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0-9 Digit Classification — with an 11th "unclassifiable" class</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>0–9 Digit Classification</h1>
+  <p class="sub">
+    A CNN with <strong>11</strong> outputs, not 10. The extra one is trained to say
+    <em>“this isn’t a digit at all.”</em>
+  </p>
+  <p class="status" id="status">checking model…</p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Draw a digit</h2>
+    <div class="canvas-wrap">
+      <canvas id="pad" width="280" height="280"></canvas>
+    </div>
+    <div class="controls">
+      <button id="predict" class="primary">Classify</button>
+      <button id="clear">Clear</button>
+      <label class="upload">
+        Upload image<input type="file" id="file" accept="image/*" hidden>
+      </label>
+    </div>
+
+    <h3>…or try something that <em>isn’t</em> a digit</h3>
+    <div class="samples" id="samples">
+      <button data-kind="star_field">Star field</button>
+      <button data-kind="glyph">Letter</button>
+      <button data-kind="scribble">Scribble</button>
+      <button data-kind="shapes">Shapes</button>
+      <button data-kind="gaussian_noise">Noise</button>
+      <button data-kind="texture">Texture</button>
+      <button data-kind="near_blank">Blank</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Result</h2>
+    <div id="result" class="result empty">
+      <p class="placeholder">Draw something and press <strong>Classify</strong>.</p>
+    </div>
+
+    <div id="detail" hidden>
+      <h3>All 11 outputs</h3>
+      <p class="hint">
+        Softmax forces these to sum to 100%. That is exactly why a 10-output model
+        can never answer “none of the above” — there is no bar for it to put the
+        mass into.
+      </p>
+      <div class="bars" id="bars"></div>
+
+      <h3>Why</h3>
+      <p class="reason" id="reason"></p>
+      <dl class="stats">
+        <div><dt>Energy</dt><dd id="energy">—</dd></div>
+        <div><dt>P(unclassifiable)</dt><dd id="punk">—</dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Two independent checks reject an input: the learned 11th class, and an
+     energy score over the digit logits.
+     <a href="https://github.com/vinaythakur-cyber/0-9-Digit-Classification">Source</a>
+  </p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
