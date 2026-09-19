@@ -1,0 +1,115 @@
+/* Dark surface throughout: the canvas is white-on-black to match MNIST's own
+   convention, and a dark page keeps the drawing area from being a glaring
+   rectangle in the middle of a light one. */
+:root {
+  --bg: #14150f;
+  --surface: #1f201a;
+  --surface-2: #2a2b24;
+  --line: #3a3b33;
+  --text: #f3f3ee;
+  --text-dim: #a8a89e;
+  --digit: #3987e5;   /* categorical slot 1 - "a real digit" */
+  --ood: #d95926;     /* categorical slot 2 - "not a digit"  */
+  --ok: #199e70;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+header, footer { padding: 28px 20px; text-align: center; }
+header h1 { margin: 0 0 6px; font-size: 1.8rem; letter-spacing: -0.02em; }
+.sub { margin: 0; color: var(--text-dim); }
+.sub strong { color: var(--ood); }
+.status { margin: 14px 0 0; font-size: 0.85rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+}
+.panel h2 { margin: 0 0 16px; font-size: 1rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-dim); }
+.panel h3 { margin: 22px 0 10px; font-size: 0.9rem; color: var(--text-dim); }
+
+.canvas-wrap { display: flex; justify-content: center; }
+canvas {
+  background: #000;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  touch-action: none;   /* stop the browser scrolling while you draw */
+  cursor: crosshair;
+  max-width: 100%;
+}
+
+.controls { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+button, .upload {
+  font: inherit;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+button:hover, .upload:hover { border-color: var(--text-dim); }
+button.primary { background: var(--digit); border-color: var(--digit); font-weight: 600; }
+button.primary:hover { filter: brightness(1.12); }
+button:disabled { opacity: 0.5; cursor: default; }
+
+.samples { display: flex; flex-wrap: wrap; gap: 6px; }
+.samples button { padding: 6px 11px; font-size: 0.85rem; }
+
+.result { text-align: center; padding: 22px 0; min-height: 128px; }
+.result.empty { display: grid; place-items: center; }
+.placeholder { color: var(--text-dim); margin: 0; }
+.verdict { font-size: 3.4rem; font-weight: 700; line-height: 1.1; margin: 0; }
+.verdict.digit { color: var(--digit); }
+.verdict.rejected { font-size: 1.6rem; color: var(--ood); }
+.confidence { margin: 6px 0 0; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+.hint { font-size: 0.82rem; color: var(--text-dim); margin: 0 0 12px; }
+
+/* Magnitude by category: one bar per class, labelled directly so identity is
+   never carried by colour alone. */
+.bars { display: grid; gap: 4px; }
+.bar-row { display: grid; grid-template-columns: 96px 1fr 52px; align-items: center; gap: 8px; }
+.bar-label { font-size: 0.78rem; color: var(--text-dim); text-align: right;
+             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { background: var(--surface-2); border-radius: 4px; height: 15px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; background: var(--digit);
+            transition: width 0.25s ease; }
+.bar-row.unknown .bar-fill { background: var(--ood); }
+.bar-row.top .bar-label { color: var(--text); font-weight: 600; }
+.bar-value { font-size: 0.78rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+.reason { font-size: 0.88rem; color: var(--text-dim); margin: 0 0 14px;
+          border-left: 2px solid var(--line); padding-left: 12px; }
+
+.stats { display: flex; gap: 26px; margin: 0; }
+.stats dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+            color: var(--text-dim); }
+.stats dd { margin: 2px 0 0; font-variant-numeric: tabular-nums; font-size: 1.05rem; }
+
+footer { color: var(--text-dim); font-size: 0.85rem; }
+footer a { color: var(--digit); }
+
+@media (max-width: 400px) {
+  main { padding: 0 12px 30px; }
+  .panel { padding: 14px; }
+}
